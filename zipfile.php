@@ -2,6 +2,7 @@
  if(isset($_POST["btn_zip"]))  
  {  
       $output = '';  
+      
       if($_FILES['zip_file']['name'] != '')  
       {  
            $file_name = $_FILES['zip_file']['name'];  
@@ -30,18 +31,30 @@
                      {  
                         $tmp = explode(".", $file);
                           $file_ext = end($tmp );  
-                          $allowed_ext = array('jpg', 'png');  
+                          $allowed_ext = array('jpg', 'png','mp4','mp3');  
                           if(in_array($file_ext, $allowed_ext))  
                           {  
                                $new_name = md5(rand()).'.' . $file_ext;  
-                               $output .= '<div class="col-md-6">
-                               <div style="padding:16px; border:1px solid #CCC;"><img src="upload/'.$new_name.'" width="170" height="240" /></div></div>';  
+                               $output .= '
+                               <div class="col-md-6">
+                               <div style="padding:16px; border:1px solid #CCC;">
+                               <img src="upload/'.$new_name.'" width="170" height="240" />
+                               <audio controls>
+                                <source src="upload/'.$new_name.'" type="audio/mpeg">
+                              </audio>
+                              <video width="320" height="240" controls>
+                              <source src="upload/'.$new_name.'" type="video/mp4">
+                            </video>
+                               </div>
+                               </div>
+                              
+                               ';  
                                copy($path.$name.'/'.$file, $path . $new_name);  
                                unlink($path.$name.'/'.$file);  
                           }       
                      }  
                      unlink($location);  
-                    //  rmdir($path . $name);  
+                     rmdir($path . $name);  
                 }  
            }  
       }  
